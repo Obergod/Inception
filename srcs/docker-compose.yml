@@ -1,0 +1,45 @@
+---
+services:
+
+---
+  db:
+    build: ./requirements/mariadb
+    container_name: "mariadb"
+    restart: on-failure
+    environement:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+    secrets:
+      db_password
+      db_root_password
+    volumes:
+      - /home/mafioron/data/mariadb:var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - inception
+---
+  wordpress:
+    build: ./requirements/wordpress
+    container_name: "wordpress"
+    restart: on-failure
+    ports:
+      - "xx:xx"
+---
+  nginx:
+    build: ./requirements/nginx
+    container_name: "nginx"
+    restart: on-failure
+
+---
+networks:
+  inception:
+    driver: bridge
+
+---
+secrets:
+  db_password:
+    ../secrets/db_password.txt
+  db_root_password:
+    ../secrets/db_root_password.txt
+
+...
