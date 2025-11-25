@@ -4,27 +4,29 @@ APPLICATION_NAME ?= Inception
 all: up
 
 setup:
-	mkdir -p /home/mafioron/data/mariadb
-	mkdir -p /home/mafioron/data/wordpress
+	sudo mkdir -p /home/mafioron/data/mariadb
+	sudo mkdir -p /home/mafioron/data/wordpress
+	sudo chmod 777 /home/mafioron/data/mariadb
+	sudo chmod 777 /home/mafioron/data/wordpress
 
-up:
-	docker-compose -f srcs/docker-compose.yml up -d
+up: setup
+	docker compose -f ./srcs/docker-compose.yml up -d
 
 down:
-	docker-compose -f srcs/docker-compose.yml down
+	docker compose -f ./srcs/docker-compose.yml down
 
 check:
-	docker-compose ps
+	docker compose ps
 
 logs:
-	docker-compose logs db
-	docker-compose logs wordpress
+	docker compose logs db
+	docker compose logs wordpress
 
 clean:
-	down
+	sudo docker system prune -af
 
 fclean: clean
-	mkdir -rf /home/mafioron/data/mariadb
-	mkdir -rf /home/mafioron/data/wordpress
+	sudo rm -rf /home/mafioron/data/mariadb/*
+	sudo rm -rf /home/mafioron/data/wordpress/*
 
 .PHONY: all setup up down clean fclean re

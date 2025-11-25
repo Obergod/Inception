@@ -2,18 +2,18 @@
 services:
 
 ---
-  db:
+  mariadb:
     build: ./requirements/mariadb
     container_name: "mariadb"
     restart: on-failure
-    environement:
+    environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
     secrets:
-      db_password
-      db_root_password
+      - db_password
+      - db_root_password
     volumes:
-      - /home/mafioron/data/mariadb:var/lib/mysql
+      - db-data:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
     networks:
       - inception
@@ -22,13 +22,34 @@ services:
     build: ./requirements/wordpress
     container_name: "wordpress"
     restart: on-failure
-    ports:
-      - "xx:xx"
+    environment:
+      WORDPRESS_DB_HOST: mariadb:3306
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+    volumes:
+      - wp-data:/var/www/html
+      - /etc/localtime:/etc/localtime:ro
+    secrets:
+      - db_password
+    depends_on:
+      - mariadb
+    networks:
+      - inception
+      
 ---
   nginx:
     build: ./requirements/nginx
     container_name: "nginx"
     restart: on-failure
+    ports:
+      - "443:443"
+    volumes:
+      - wp-data:/var/www/html
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - wordpress
+    networks:
+      - inception
 
 ---
 networks:
@@ -37,9 +58,25 @@ networks:
 
 ---
 secrets:
-  db_password:
-    ../secrets/db_password.txt
+  db_password: 
+    file: ../secrets/db_password.txt  
   db_root_password:
-    ../secrets/db_root_password.txt
+    file: ../secrets/db_root_password.txt
+    
+
+---
+volumes:
+  db-data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: "/home/mafioron/data/mariadb"
+  wp-data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: "/home/mafioron/data/wordpress"
 
 ...
