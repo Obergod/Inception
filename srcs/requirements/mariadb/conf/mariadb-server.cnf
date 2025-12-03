@@ -1,34 +1,16 @@
-[client]
-port:
-3306
-
 [mysql]
-default-character-set=utf8mb4
+default-character-set	= utf8mb4
 
 [mysqld]
-pid-file=/run/maria/maria.pid
-#network=inception ?
 
-innodb_buffer_pool_size=64M
-performance_schema=OFF
+bind-address	= 0.0.0.0
+port	= 3306
 
-[mysqld_safe]
-log_error=/var/log/maria/error_safe.log
+innodb_buffer_pool_size	= 64M
+performance_schema	= OFF
 
-[mariadbd]
-user=mysql
+user	= mysql
 
-#datadir=/var/lib/maria/
+datadir	= /var/lib/mysql/
 
-character_set_server=utf8mb4
-
-log_output=FILE
-
-general_log_file=/var/log/maria/general.log
-
-slow_query_log
-slow_query_log_file=/var/log/maria/slow.log
-long_query_time=3
-
-log_error=/var/log/maria/error.log
-log_warnings=2
+character_set_server	= utf8mb4
