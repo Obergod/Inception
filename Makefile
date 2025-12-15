@@ -12,17 +12,17 @@ setup:
 
 
 up: setup
-	docker compose -f ./srcs/docker-compose.yml up -d
+	docker-compose -f ./srcs/docker-compose.yml up -d
 
 down:
-	docker compose -f ./srcs/docker-compose.yml down
+	docker-compose -f ./srcs/docker-compose.yml down
 
 check:
-	docker compose ps -f
+	docker-compose ps -f
 
 logs:
-	docker compose logs mariadb
-	docker compose logs wordpress
+	docker-compose logs mariadb
+	docker-compose logs wordpress
 
 clean:
 	sudo docker system prune -af

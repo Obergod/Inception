@@ -10,6 +10,8 @@ RUN apt-get update && \
 	tar && \
 	rm -rf /var/lib/apt/lists/*
 	
+RUN mkdir -p /var/www/html
+
 RUN wget https://wordpress.org/latest.tar.gz && \
 	tar -xzf latest.tar.gz && \
 	mv wordpress/* /var/www/html && \
