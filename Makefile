@@ -14,15 +14,19 @@ setup:
 up: setup
 	docker-compose -f ./srcs/docker-compose.yml up -d
 
+build:
+	docker-compose -f ./srcs/docker-compose.yml up -d --build
+
 down:
 	docker-compose -f ./srcs/docker-compose.yml down
 
 check:
-	docker-compose ps -f
+	docker-compose ps -f ./srcs/docker-compose.yml
 
 logs:
-	docker-compose logs mariadb
-	docker-compose logs wordpress
+	docker logs mariadb
+	docker logs wordpress
+	docker logs nginx
 
 clean:
 	sudo docker system prune -af

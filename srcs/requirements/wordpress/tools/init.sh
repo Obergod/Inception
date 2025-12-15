@@ -21,9 +21,9 @@ if [ ! -f wp-config.php ]; then
 	wp core install \
 		--url=https://mafioron.42.fr \
 		--title=Inception \
-		admin_user="mafioron" \
+		--admin_user="mafioron" \
 		--admin_password="real_pass" \
-		--admin_email="mafiorn@student.42.fr" \
+		--admin_email="mafioron@student.42.fr" \
 		--allow-root
 	
 	wp user create Alain Alain@42.fr \
