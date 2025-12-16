@@ -1,9 +1,13 @@
 #! /bin/bash
 
-while ! mysqladmin ping -h"$WORDPRESS_DB_HOST" --silent; do
+DB_PASSWORD=$( cat /run/secrets/db_password )
+
+while ! mysqladmin ping -h"$WORDPRESS_DB_HOST" -u"${WORDPRESS_DB_USER}" -p"${DB_PASSWORD}" --silent; do
 	echo "waiting for mariadb"
 	sleep 2
 done
+
+echo "mariadb is ready"
 
 cd /var/www/html
 
@@ -14,7 +18,7 @@ if [ ! -f wp-config.php ]; then
 	wp config create \
 		--dbname="${WORDPRESS_DB_NAME}" \
 		--dbuser="${WORDPRESS_DB_USER}" \
-		--dbpass=$( cat /run/secrets/db_password ) \
+		--dbpass="${DB_PASSWORD}"
 		--dbhost="${WORDPRESS_DB_HOST}" \
 		--allow-root
 
