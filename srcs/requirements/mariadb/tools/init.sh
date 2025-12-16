@@ -5,6 +5,9 @@ set -e
 DB_PASSWORD=$( cat /run/secrets/db_password )
 ROOT_PASSWORD=$( cat /run/secrets/db_root_password )
 
+mkdir -p /run/mysqld && \
+chown -R mysql:mysql /run/mysqld
+
 if [ ! -d /var/lib/mysql/mysql ]; then
 	echo "Initalizing MariaDB";
 

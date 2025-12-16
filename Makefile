@@ -31,10 +31,11 @@ logs:
 clean:
 	sudo docker system prune -af
 
-fclean: clean
+fclean: down
+	docker volume rm srcs_db-data srcs_wp-data 2>/dev/null
 	sudo rm -rf /home/mafioron/data/mariadb/*
 	sudo rm -rf /home/mafioron/data/wordpress/*
-
+	sudo docker system prune -af
 re:
 	fclean all
 

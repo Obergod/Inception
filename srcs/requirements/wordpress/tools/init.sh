@@ -18,7 +18,7 @@ if [ ! -f wp-config.php ]; then
 	wp config create \
 		--dbname="${WORDPRESS_DB_NAME}" \
 		--dbuser="${WORDPRESS_DB_USER}" \
-		--dbpass="${DB_PASSWORD}"
+		--dbpass="${DB_PASSWORD}" \
 		--dbhost="${WORDPRESS_DB_HOST}" \
 		--allow-root
 
