@@ -2,10 +2,7 @@
 
 DB_PASSWORD=$( cat /run/secrets/db_password )
 
-while ! mysqladmin ping -h"$WORDPRESS_DB_HOST" -u"${WORDPRESS_DB_USER}" -p"${DB_PASSWORD}" --silent; do
-	echo "waiting for mariadb"
-	sleep 2
-done
+sleep 5
 
 echo "mariadb is ready"
 
