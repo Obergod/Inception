@@ -31,8 +31,7 @@ logs:
 clean:
 	sudo docker system prune -af
 
-fclean: down
-	docker volume rm srcs_db-data srcs_wp-data 2>/dev/null
+fclean:
 	sudo rm -rf /home/mafioron/data/mariadb/
 	sudo rm -rf /home/mafioron/data/wordpress/
 	sudo docker system prune -af
@@ -40,3 +39,4 @@ re:
 	fclean all
 
 .PHONY: all setup up down clean fclean re
+#	docker volume rm srcs_db-data srcs_wp-data 2>/dev/null

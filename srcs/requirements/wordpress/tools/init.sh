@@ -8,6 +8,7 @@ echo "mariadb is ready"
 
 cd /var/www/html
 
+mkdir -p /run/php
 
 if [ ! -f wp-config.php ]; then
 	echo "configuring worpress"

@@ -6,11 +6,11 @@ RUN apt-get update && \
 	mariadb-client && \
 	rm -rf /var/lib/apt/lists/*
 
-COPY tools/init.sh /usr/local/bin/
-COPY conf/mariadb-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf 
+COPY tools/test.sh /usr/local/bin/
+COPY conf/test.cnf /etc/mysql/mariadb.conf.d/50-server.cnf 
 
-RUN chmod +x /usr/local/bin/init.sh
+RUN chmod +x /usr/local/bin/test.sh
 
 EXPOSE 3306
 
-CMD ["init.sh"]
+CMD ["test.sh"]

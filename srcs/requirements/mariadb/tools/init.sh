@@ -7,12 +7,13 @@ ROOT_PASSWORD=$( cat /run/secrets/db_root_password )
 
 mkdir -p /run/mysqld && \
 chown -R mysql:mysql /run/mysqld
+chown -R mysql:mysql /var/lib/mysql
 
 if [ ! -d /var/lib/mysql/mysql ]; then
 	echo "Initalizing MariaDB";
 
 	mysql_install_db --user=mysql --datadir=/var/lib/mysql;
-	
+fi
 	mysqld --user=mysql --bootstrap << EOF
 FLUSH PRIVILEGES;
 CREATE DATABASE IF NOT EXISTS `${MYSQL_DATABASE}`;
@@ -25,7 +26,6 @@ FLUSH PRIVILEGES;
 EOF
 
 	echo "mariaDB initialized"
-fi
 
 
 
