@@ -13,6 +13,7 @@ chown -R mysql:mysql /var/lib/mysql
 if [ ! -d /var/lib/mysql/mysql ]; then
     echo "Initializing database..."
     mariadb-install-db --user=mysql --datadir=/var/lib/mysql > /dev/null
+fi
 
 echo "Starting temporary MariaDB server..."
 mysqld_safe --datadir=/var/lib/mysql --user=mysql &
@@ -44,7 +45,6 @@ mysqladmin -uroot -p"${ROOT_PASSWORD}" shutdown
 
 wait "$pid" || true
 
-fi
 
 echo "Starting MariaDB in foreground..."
 exec mysqld --user=mysql --console
