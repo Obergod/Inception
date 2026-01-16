@@ -4,7 +4,7 @@ define( 'DB_USER', getenv('WORDPRESS_DB_USER') );
 
 define( 'DB_PASSWORD', trim(file_get_contents('/run/secrets/db_password')) );
 
-define( 'DB_HOST', getenv('WORDPRESS_DB_HOST' ?: 'localhost') );
+define( 'DB_HOST', getenv('WORDPRESS_DB_HOST' ) );
 
 $table_prefix = 'wp_';
 
