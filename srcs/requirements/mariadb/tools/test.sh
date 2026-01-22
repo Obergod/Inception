@@ -13,7 +13,6 @@ chown -R mysql:mysql /var/lib/mysql
 if [ ! -d /var/lib/mysql/mysql ]; then
     echo "Initializing database..."
     mariadb-install-db --user=mysql --datadir=/var/lib/mysql > /dev/null
-fi
 
 echo "Starting temporary MariaDB server..."
 mysqld_safe --datadir=/var/lib/mysql --user=mysql &
@@ -25,7 +24,7 @@ until mysqladmin ping >/dev/null 2>&1; do
 done
 
 echo "Running initial SQL setup..."
-mysql -uroot <<-EOSQL
+mysql -uroot -p"{ROOT_PASSWORD}" <<-EOSQL
     FLUSH PRIVILEGES;
     CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;
     CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';
@@ -45,6 +44,7 @@ mysqladmin -uroot -p"${ROOT_PASSWORD}" shutdown
 
 wait "$pid" || true
 
+fi
 
 echo "Starting MariaDB in foreground..."
 exec mysqld --user=mysql --console

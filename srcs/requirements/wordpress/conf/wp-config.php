@@ -1,3 +1,5 @@
+<?php
+
 define( 'DB_NAME', getenv('WORDPRESS_DB_NAME') );
 
 define( 'DB_USER', getenv('WORDPRESS_DB_USER') );
@@ -31,3 +33,5 @@ if ( ! defined( 'ABSPATH' ) ) {
  * C'est ce qui démarre réellement WordPress.
  */
 require_once ABSPATH . 'wp-settings.php';
+
+?>

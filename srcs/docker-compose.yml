@@ -25,7 +25,7 @@ services:
       WORDPRESS_DB_USER: ${MYSQL_USER}
       WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
     volumes:
-      - wp-data:/var/www/html
+      - wp-data:/var/www/wordpress
       - /etc/localtime:/etc/localtime:ro
     secrets:
       - db_password
@@ -41,7 +41,7 @@ services:
     ports:
       - "443:443"
     volumes:
-      - wp-data:/var/www/html
+      - wp-data:/var/www/wordpress
       - /etc/localtime:/etc/localtime:ro
     depends_on:
       - wordpress

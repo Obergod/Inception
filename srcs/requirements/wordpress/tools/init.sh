@@ -6,12 +6,12 @@ sleep 5
 
 echo "mariadb is ready"
 
-cd /var/www/html
+cd /var/www/wordpress
 
 mkdir -p /run/php
 
-if [ ! -f wp-config.php ]; then
-	echo "configuring worpress"
+if [ ! -f /var/www/wordpress/wp-config.php ]; then
+	echo "configuring wordpress"
 
 	wp config create \
 		--dbname="${WORDPRESS_DB_NAME}" \
@@ -19,6 +19,11 @@ if [ ! -f wp-config.php ]; then
 		--dbpass="${DB_PASSWORD}" \
 		--dbhost="${WORDPRESS_DB_HOST}" \
 		--allow-root
+fi
+
+if ! wp core is-installed --allow-root --path='/var/www/wordpress'; then
+
+	echo "core install wordpress"
 
 	wp core install \
 		--url=https://mafioron.42.fr \
@@ -33,5 +38,7 @@ if [ ! -f wp-config.php ]; then
 		--user_pass="Alain_pass" \
 		--allow-root
 fi
+
+echo "Wordpress configured"
 
 exec php-fpm7.4 -F

@@ -7,9 +7,10 @@ RUN apt-get update && \
 	rm -rf /var/lib/apt/lists/*
 
 COPY tools/test.sh /usr/local/bin/
-COPY conf/test.cnf /etc/mysql/mariadb.conf.d/50-server.cnf 
+COPY conf/mariadb-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf 
 
 RUN chmod +x /usr/local/bin/test.sh
+RUN chmod +x /etc/mysql/mariadb.conf.d/50-server.cnf
 
 EXPOSE 3306
 
