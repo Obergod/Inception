@@ -1,8 +1,11 @@
 #! /bin/bash
 
-DB_PASSWORD=$( cat /run/secrets/db_password )
+DB_PASSWORD=$(tr -d '\n' < /run/secrets/db_password)
 
-sleep 5
+echo "Waiting for MariaDB to be ready..."
+while ! mysqladmin ping -h"${WORDPRESS_DB_HOST%%:*}" --silent 2>/dev/null; do
+    sleep 2
+done
 
 echo "mariadb is ready"
 

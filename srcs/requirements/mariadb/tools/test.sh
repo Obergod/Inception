@@ -3,8 +3,8 @@ set -e
 
 echo "Starting MariaDB initialization..."
 
-DB_PASSWORD=$(cat /run/secrets/db_password)
-ROOT_PASSWORD=$(cat /run/secrets/db_root_password)
+DB_PASSWORD=$(tr -d '\n' < /run/secrets/db_password)
+ROOT_PASSWORD=$(tr -d '\n' < /run/secrets/db_root_password)
 
 mkdir -p /run/mysqld
 chown -R mysql:mysql /run/mysqld
@@ -12,7 +12,7 @@ chown -R mysql:mysql /var/lib/mysql
 
 if [ ! -d /var/lib/mysql/mysql ]; then
     echo "Initializing database..."
-    mariadb-install-db --user=mysql --datadir=/var/lib/mysql > /dev/null
+    mysql_install_db --user=mysql --datadir=/var/lib/mysql
 
 echo "Starting temporary MariaDB server..."
 mysqld_safe --datadir=/var/lib/mysql --user=mysql &
@@ -24,7 +24,7 @@ until mysqladmin ping >/dev/null 2>&1; do
 done
 
 echo "Running initial SQL setup..."
-mysql -uroot -p"{ROOT_PASSWORD}" <<-EOSQL
+mysql -uroot  <<-EOSQL
     FLUSH PRIVILEGES;
     CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;
     CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';

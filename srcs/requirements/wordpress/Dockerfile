@@ -25,11 +25,11 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
 
 COPY tools/init.sh /usr/local/bin/
 COPY ./conf/wp-config.php /var/www/wordpress/wp-config.php
-COPY ./conf/www.cnf /etc/mysql/conf.d/www.cnf
+#COPY ./conf/www.cnf /etc/mysql/conf.d/www.cnf
+COPY ./conf/www.cnf /etc/php/7.4/fpm/pool.d/www.conf
+
 
 RUN chmod +x /usr/local/bin/init.sh
-RUN chmod +x /var/www/wordpress/wp-config.php
-RUN chmod +x /etc/mysql/conf.d/www.cnf
 
 EXPOSE 9000
 

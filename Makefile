@@ -32,8 +32,9 @@ clean:
 	sudo docker system prune -af
 
 fclean:
-	sudo rm -rf /home/mafioron/data/mariadb/
-	sudo rm -rf /home/mafioron/data/wordpress/
+	docker-compose -f ./srcs/docker-compose.yml down -v
+	sudo rm -rf /home/mafioron/data/mariadb
+	sudo rm -rf /home/mafioron/data/wordpress
 	sudo docker system prune -af
 re:
 	fclean all
