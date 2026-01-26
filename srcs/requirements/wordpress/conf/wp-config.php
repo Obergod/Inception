@@ -19,19 +19,12 @@ define('SECURE_AUTH_SALT', ')#hWIp*~SeV`-Rj-mS7l.O05><8/v`Q/Z1$X7v:s]SJ/AJ@-o4{/
 define('LOGGED_IN_SALT',   '<-EXg&nELGR0jK>&m#7 1Iz)<@-N9+&.G=Px??~r53gZ2+!t4WNQBLFXozxO)gZC');
 define('NONCE_SALT',       '4a?62^QBAf*<HC`xsk[MXS]c%w~e/Vu+$7QizzV:)FHF:N=I2F>](Sib/s+7(x:)');
 
+define('FS_METHOD', 'direct');
 
-/**
- * Chemin absolu vers le répertoire de WordPress.
- * Nécessaire pour inclure les fichiers de base du CMS.
- */
 if ( ! defined( 'ABSPATH' ) ) {
     define( 'ABSPATH', __DIR__ . '/' );
 }
 
-/**
- * Chargement des fichiers de configuration de WordPress.
- * C'est ce qui démarre réellement WordPress.
- */
 require_once ABSPATH . 'wp-settings.php';
 
 ?>

@@ -40,4 +40,3 @@ re:
 	fclean all
 
 .PHONY: all setup up down clean fclean re
-#	docker volume rm srcs_db-data srcs_wp-data 2>/dev/null

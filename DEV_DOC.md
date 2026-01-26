@@ -1,0 +1,9 @@
+## This document will help developers to understand main points or usage of this project.
+
+### 1. To be able to set up the environment from scrach on Virtual Machine, you will need to make few steps. First, to make a Virtual Machine you will need to fetch image of ubuntu / debian / any linux distibution and flash it on your VM using Virtual Box app. After that, we need to install docker services for this project on our machine. To do so, we can run get-docker script from *https://github.com/docker/docker-install*. Then to be able to use it as a root, we will need to add our user to docker group by using this command: *usermod -aG docker $USER*. Also, to be able to open my web site, we need to modify this file: */etc/hosts* to allow ip of site with localhost. We will need to install some additional services, such as make and git. Do not forget to put .env file into the folder which is located in /home/Inception/srcs/secrets. 
+
+### 2. I have a Makefile that has several commands that will help to start or stop the project. *docker compose up* will build create and start linked services. *docker compose build* builds services. *docker compose down* stops and removes containers, networks, volumes and images created by up. *docker compose start* start existing containers. *docker compose stop* stops running containers without removing them. *docker compose ps* lists containers for this project, with current status and exposed ports. To be able to see logs of containers use *docker logs*.
+
+### 3. To be able to see how containers and volumes are managed, you can use: *docker volume inspect name_of_volume* or *docker volume ls*. To remove all unused local volumes use *docker volume prune*.
+
+### 4. In my docker-compose.yml file i have volumes. And they act like real directories on my host machine. So they will store and memorize stuff needed by docker even if I reboot my VM. And I "link" those directories with directories on my dockers.

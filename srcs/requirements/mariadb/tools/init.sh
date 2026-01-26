@@ -1,32 +1,36 @@
 #!/bin/bash
-
 set -e
 
-DB_PASSWORD=$( cat /run/secrets/db_password )
-ROOT_PASSWORD=$( cat /run/secrets/db_root_password )
+echo "Starting MariaDB initialization..."
 
-mkdir -p /run/mysqld && \
+DB_PASSWORD=$(tr -d '\n' < /run/secrets/db_password)
+ROOT_PASSWORD=$(tr -d '\n' < /run/secrets/db_root_password)
+
+mkdir -p /run/mysqld
 chown -R mysql:mysql /run/mysqld
 chown -R mysql:mysql /var/lib/mysql
 
 if [ ! -d /var/lib/mysql/mysql ]; then
-	echo "Initalizing MariaDB";
+    echo "Initializing database..."
+    mysql_install_db --user=mysql --datadir=/var/lib/mysql
 
-	mysql_install_db --user=mysql --datadir=/var/lib/mysql;
+    echo "Running initial SQL setup..."
+    mysqld --user=mysql --bootstrap <<-EOSQL
+		FLUSH PRIVILEGES;
+		CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;
+		CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';
+		GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO '${MYSQL_USER}'@'%';
+		ALTER USER 'root'@'localhost' IDENTIFIED BY '${ROOT_PASSWORD}';
+		DELETE FROM mysql.user WHERE User='';
+		DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
+		DROP DATABASE IF EXISTS test;
+		DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';
+		FLUSH PRIVILEGES;
+	EOSQL
+
+    echo "SQL setup complete!"
 fi
-	mysqld --user=mysql --bootstrap << EOF
-FLUSH PRIVILEGES;
-CREATE DATABASE IF NOT EXISTS `${MYSQL_DATABASE}`;
-CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';
-GRANT ALL PRIVILEGES ON `${MYSQL_DATABASE}`.* TO '${MYSQL_USER}'@'%';
-ALTER USER 'root'@'localhost' IDENTIFIED BY '${ROOT_PASSWORD}';
-DELETE FROM mysql.user WHERE User='';
-DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
-FLUSH PRIVILEGES;
-EOF
 
-	echo "mariaDB initialized"
-
-
-
+echo "Starting MariaDB in foreground..."
 exec mysqld --user=mysql --console
+

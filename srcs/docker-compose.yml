@@ -24,11 +24,15 @@ services:
       WORDPRESS_DB_HOST: mariadb:3306
       WORDPRESS_DB_USER: ${MYSQL_USER}
       WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+      ADMIN_USER: ${ADMIN_USER}
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
+      USER_PASS: ${USER_PASS}
     volumes:
       - wp-data:/var/www/wordpress
       - /etc/localtime:/etc/localtime:ro
     secrets:
       - db_password
+      - admin_password
     depends_on:
       - mariadb
     networks:
@@ -57,6 +61,8 @@ secrets:
     file: ../secrets/db_password.txt  
   db_root_password:
     file: ../secrets/db_root_password.txt
+  admin_password: 
+    file: ../secrets/admin_password.txt  
     
 volumes:
   db-data:
